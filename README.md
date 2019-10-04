@@ -111,3 +111,4 @@ The transaction component will give a UI like this with both online and offline 
 
 ## Licence
 
+[LICENSE](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/LICENSE)
