@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/mmitrasish/algorand-sdk-react-component/master/src/assets/images/algorandicon.webp" width="100" height="100">
 
-**Algorand React** is a set of reusuable component which is like a wrapper to Algorand JS SDK that can be used to create and restore account in algorand blockchain (https://www.algorand.com/) and also create, sign and send both online and offline transactions on algorand blockchain.
+**Algorand React** is an react application that can communicate with Algorand blockchain (https://www.algorand.com/) using Algorand JS SDK for creating and restoring account in algorand blockchain and also to create, sign and send both online and offline transactions on algorand blockchain. It contain a set of reusuable component which is like a wrapper to Algorand JS SDK that can be used by developers to create application on Algorand blockchain. 
 
 ![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot1.png)
 
@@ -92,6 +92,16 @@ This will give you a form where users will be able to upload a offline signed tr
 ```javascript
 render(){
   return(<TransactionOfflineComponent />);
+}
+```
+
+* #### Get suggested fees using SuggestedFeeComponent component
+
+This will give you a suggested fee from the algorand client
+
+```javascript
+render(){
+  return(<SuggestedFeeComponent />);
 }
 ```
 
