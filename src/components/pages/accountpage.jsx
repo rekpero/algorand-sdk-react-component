@@ -34,7 +34,7 @@ class AccountPage extends React.Component {
       <AccountComponent
         address={this.state.address}
         mnemonic={this.state.mnemonic}
-        accountList={this.state.accountList}
+        accountList={JSON.parse(this.state.accountList) || []}
         changeAccount={this.changeAccount}
       />
     );

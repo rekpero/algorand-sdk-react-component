@@ -66,7 +66,7 @@ const AccountDetailComponent = props => {
           >
             <span className="dropdown-item disabled">My Accounts</span>
             <div className="dropdown-divider"></div>
-            {(JSON.parse(props.accountList) || []).map((account, index) => (
+            {props.accountList.map((account, index) => (
               <button
                 className="dropdown-item"
                 type="button"
