@@ -62,8 +62,9 @@ export default class TransactionOfflineComponent extends React.Component {
   // sending the offline signed txn
   sendTransaction = () => {
     let signedTxn = JSON.parse(this.state.txn);
+    console.log(Object.values(signedTxn.blob));
 
-    this.startTransaction(signedTxn).catch(e => {
+    this.startTransaction(Object.values(signedTxn.blob)).catch(e => {
       console.log(e);
     });
   };
@@ -71,7 +72,7 @@ export default class TransactionOfflineComponent extends React.Component {
   // starting transaction here with the signed transaction
   startTransaction = async signedTxn => {
     // sending the transaction
-    AlgorandClient.sendRawTransaction(signedTxn.blob)
+    AlgorandClient.sendRawTransaction(signedTxn)
       .then(tx => {
         console.log(tx);
         this.setState({

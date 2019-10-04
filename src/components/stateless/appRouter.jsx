@@ -5,15 +5,17 @@ import CreateAccountPage from "../pages/createaccountpage";
 import TransactionPage from "../pages/transactionpage";
 import RestoreAccountPage from "../pages/restoreaccountcomponent";
 import AccountPage from "../pages/accountpage";
+import MultisigTransactionPage from "../pages/multisigtransactionpage";
 
 const AppRouter = () => {
   return (
     <Router>
       <App>
-        <Route path="/create" render={CreateAccountPage} />
-        <Route path="/restore" render={RestoreAccountPage} />
-        <Route path="/account" render={() => <AccountPage />} />
-        <Route path="/transaction" render={() => <TransactionPage />} />
+        <Route path="/create" component={CreateAccountPage} />
+        <Route path="/restore" component={RestoreAccountPage} />
+        <Route path="/account" component={AccountPage} />
+        <Route path="/transaction" component={TransactionPage} />
+        <Route path="/multisig" component={MultisigTransactionPage} />
         <Route
           exact
           path="/"

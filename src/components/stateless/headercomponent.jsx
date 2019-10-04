@@ -32,6 +32,11 @@ const Header = props => {
                   Transaction
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/multisig">
+                  Multisig Transaction
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
