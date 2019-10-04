@@ -1,68 +1,124 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Algorand React
 
-## Available Scripts
+<img src="https://raw.githubusercontent.com/mmitrasish/algorand-sdk-react-component/master/src/assets/images/algorandicon.webp" width="100" height="100">
 
-In the project directory, you can run:
+**Algorand React** is an react application that can communicate with Algorand blockchain (https://www.algorand.com/) using Algorand JS SDK for creating and restoring account in algorand blockchain and also to create, sign and send both online and offline transactions on algorand blockchain. It contain a set of reusuable component which is like a wrapper to Algorand JS SDK that can be used by developers to create application on Algorand blockchain. 
 
-### `npm start`
+![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot1.png)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Features
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+* Account creation
+* Account restoration with mnemonic
+* Account transactions in the last 1000 round
+* Multiple account handling
+* Send Transaction Online
+* Sending Transaction Signed Offline
+* Getting suggested fees
 
-### `npm test`
+## Usage Overview
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There is a set of components that can be used:
 
-### `npm run build`
+* #### Creating Account using CreateAccountButton component
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+With the click of the button you can create an account and get the keys from the function
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```javascript
+// get the keys when you click the create button
+let createAccount = keys => {
+  console.log(keys)
+};
+render(){
+  return( <CreateAccountButton createAccount={createAccount} />);
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+UI will only be the create button shown in the bellow screenshot:
 
-### `npm run eject`
+![Restore Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot3.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* #### Restoring Account with mnemonic using RestoreAccountButton component
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+With the click of the button you can restore the account you have using the mnemonic of account and get the keys from the function
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```javascript
+// get the keys when you click the restore button
+let restoreAccount = keys => {
+  console.log(keys)
+};
+render(){
+  return(<RestoreAccountButton restoreAccount={this.restoreAccount} mnemonic={"your mnemonic"} />);
+}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+UI will only be the restore button shown in the bellow screenshot:
 
-## Learn More
+![Restore Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot4.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* #### Show account details and all the transactions in the last 1000 round using AccountComponent component
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This will show you all the details about account like balance, mnemonic, list of accounts, list of transactions in last 1000 round and list of account and also can change account if you have multiple accounts
 
-### Code Splitting
+```javascript
+// get the account when you change it if you have multiple account
+changeAccount = account => {
+    console.log(account.address);
+};
+render(){
+  return(<AccountComponent address={"Your address"} mnemonic={"Your mnemonic"} 
+  accountList={[list of accounts]} changeAccount={this.changeAccount} />);
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+This will give a UI like this with both account details and recent transaction components: 
 
-### Analyzing the Bundle Size
+![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot5.png)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+* #### Transactions can be done using TransactionComponent component
 
-### Making a Progressive Web App
+This will give you a form where users will be able to fill destination address, amount to pay and note. Also the user will be able to see the suggested fees. All the other fields like round range are not shown and will be pre filled during the start of transaction. You can also download the transaction for offline signing using the Sign Offline button which will give a json file which can be read when signing in offline machine using JS.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```javascript
+render(){
+  return(<TransactionComponent mnemonic={"Your mnemonic"} />);
+}
+```
 
-### Advanced Configuration
+* #### Offline Transactions can be send using TransactionOfflineComponent component
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+This will give you a form where users will be able to upload a offline signed transaction in json format which can be sent using algorand client sdk. This component can also be used to sign participant key registration by getting the signed transaction in json format and upload it in this component
 
-### Deployment
+```javascript
+render(){
+  return(<TransactionOfflineComponent />);
+}
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+* #### Get suggested fees using SuggestedFeeComponent component
 
-### `npm run build` fails to minify
+This will give you a suggested fee from the algorand client
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```javascript
+render(){
+  return(<SuggestedFeeComponent />);
+}
+```
+
+The transaction component will give a UI like this with both online and offline transaction components: 
+
+![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot2.png)
+
+## Dependencies
+
+1. React v16.10.1
+1. React Router Dom v5.0.1
+1. Algosdk v1.3.1
+1. Bootstrap v4.3.1
+1. Jquery v3.4.1
+1. Popper.js v1.15.0
+1. clipboard-copy v3.1.0
+
+## Licence
+
+[LICENSE](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/LICENSE)
