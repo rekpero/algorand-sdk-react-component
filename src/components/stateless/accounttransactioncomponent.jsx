@@ -2,6 +2,14 @@ import * as React from "react";
 import algosdk from "algosdk";
 import TransactionRow from "./transactionrow";
 
+/**
+ * This component will show account transaction list for the address
+ * @props transactions: list of transaction -> list of account transaction
+ * @props transactionLoaded: boolean -> true when all transaction loaded
+ *
+ *
+ * @author [Mitrasish Mukherjee](https://github.com/mmitrasish)
+ */
 const AccountTransactionComponent = props => {
   return (
     <div className="px-4">

@@ -3,7 +3,18 @@ import algosicon from "../../assets/images/algorandicon.webp";
 import copy from "clipboard-copy";
 import { Route } from "react-router-dom";
 
+/**
+ * This component will show account details and account transaction list for the address also can change address
+ * @props balace: number -> account balance
+ * @props address: string -> account address
+ * @props mnemonic: string -> account mnemonic
+ * @props accountList: Array -> list of account created
+ * @props changeAccount: (account) => void -> send account to be changed
+ *
+ * @author [Mitrasish Mukherjee](https://github.com/mmitrasish)
+ */
 const AccountDetailComponent = props => {
+  // Download mnemonic file
   let downloadMnemonicFile = () => {
     const element = document.createElement("a");
     const file = new Blob([props.mnemonic], {
@@ -15,6 +26,7 @@ const AccountDetailComponent = props => {
     element.click();
   };
 
+  // copy to clipboard
   let copyToClipboard = () => {
     copy(props.address);
   };

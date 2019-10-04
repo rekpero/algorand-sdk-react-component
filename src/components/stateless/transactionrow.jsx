@@ -1,6 +1,17 @@
 import * as React from "react";
 import algosicon from "../../assets/images/algorandicon.webp";
 
+/**
+ * This component will show account transaction list for the address
+ * @props transactionId: string -> transaction id
+ * @props amount: number -> amount sent (in Algos)
+ * @props addressFrom: string -> address from where the pay is sent
+ * @props addressTo: string -> address to where the pay is sent
+ * @props note: string -> note added with the pay
+ *
+ *
+ * @author [Mitrasish Mukherjee](https://github.com/mmitrasish)
+ */
 const TransactionRow = props => {
   return (
     <div>

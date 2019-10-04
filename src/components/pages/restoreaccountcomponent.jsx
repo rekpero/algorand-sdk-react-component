@@ -1,8 +1,14 @@
 import * as React from "react";
-import algosdk from "algosdk";
 import { withRouter, Link } from "react-router-dom";
+import RestoreAccountButton from "../stateless/restoreaccountbutton";
 
-class RestoreAccountComponent extends React.Component {
+/**
+ * This component will restore your account given mnemonic
+ * @state mnemonic: string -> store account mnemonic from textarea
+ *
+ * @author [Mitrasish Mukherjee](https://github.com/mmitrasish)
+ */
+class RestoreAccountPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,17 +16,20 @@ class RestoreAccountComponent extends React.Component {
     };
   }
 
+  // load mnemonic from user
   loadMnemonic = event => {
     this.setState({ mnemonic: event.target.value });
   };
 
-  restoreAccount = async () => {
-    var keys = algosdk.mnemonicToSecretKey(this.state.mnemonic);
+  // getting the restored account keys from restoreaccountbutton component and pushing it to localstorage
+  restoreAccount = keys => {
     console.log(keys);
 
+    // adding to localstorage
     localStorage.setItem("address", keys.addr);
     localStorage.setItem("mnemonic", this.state.mnemonic);
 
+    // pushing account to localstorage account list
     let accountList = JSON.parse(localStorage.getItem("accountList")) || [];
     accountList.push({
       address: keys.addr,
@@ -28,6 +37,7 @@ class RestoreAccountComponent extends React.Component {
     });
     localStorage.setItem("accountList", JSON.stringify(accountList));
 
+    // redirecting to account page
     this.props.history.push("/account");
   };
 
@@ -51,13 +61,10 @@ class RestoreAccountComponent extends React.Component {
               />
             </div>
             <div className="form-group mb-4">
-              <button
-                type="button"
-                className="btn btn-outline-light col-md-12"
-                onClick={this.restoreAccount}
-              >
-                Restore Account
-              </button>
+              <RestoreAccountButton
+                restoreAccount={this.restoreAccount}
+                mnemonic={this.state.mnemonic}
+              />
             </div>
             <hr className="bg-white" />
             <div className="text-center mt-4">
@@ -74,4 +81,4 @@ class RestoreAccountComponent extends React.Component {
     );
   }
 }
-export default withRouter(RestoreAccountComponent);
+export default withRouter(RestoreAccountPage);
