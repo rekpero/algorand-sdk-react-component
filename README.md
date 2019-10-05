@@ -4,7 +4,6 @@
 
 **Algorand React** is an react application that can communicate with Algorand blockchain (https://www.algorand.com/) using Algorand JS SDK for creating and restoring account in algorand blockchain and also to create, sign and send both online and offline transactions on algorand blockchain. It contain a set of reusuable component which is like a wrapper to Algorand JS SDK that can be used by developers to create application on Algorand blockchain. 
 
-![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot1.png)
 
 ## Features
 
@@ -15,6 +14,8 @@
 * Send Transaction Online
 * Sending Transaction Signed Offline
 * Getting suggested fees
+* Predicting round range based on datetime entered
+* Multi Signature Transaction
 
 ## Usage Overview
 
@@ -95,6 +96,16 @@ render(){
 }
 ```
 
+* #### Predict round range based on datetime entered by user using PredictedRoundRangeComponent component
+
+This will give you a date and time input field and with the click of Get round range button it will show the predicted round range based on the datetime entered
+
+```javascript
+render(){
+  return(<PredictedRoundRangeComponent />);
+}
+```
+
 * #### Get suggested fees using SuggestedFeeComponent component
 
 This will give you a suggested fee from the algorand client
@@ -108,6 +119,20 @@ render(){
 The transaction component will give a UI like this with both online and offline transaction components: 
 
 ![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot2.png)
+
+* #### Multi Signature Transaction can be send using MultisigTransactionComponent component
+
+This will create a form where user will be able to fill destination address, amount, note, number of account to be created and threshold. User first get to click create account button which will create a list of account and show it in the component which then can used to transfer amount to them and then user can click send which will sign and send transaction to the blockchain using algod client.
+
+```javascript
+render(){
+  return(<MultisigTransactionComponent />);
+}
+```
+
+The multisig transaction component will give a UI like this: 
+
+![Account Component](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/src/assets/images/screenshots/Screenshot6.png)
 
 ## Dependencies
 
