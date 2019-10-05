@@ -24,6 +24,7 @@ export default class PredictedRoundRangeComponent extends React.Component {
   }
   componentDidMount() {
     let today = new Date();
+    // configuring todays date
     let todayDate =
       today.getFullYear() +
       "-" +
@@ -31,6 +32,7 @@ export default class PredictedRoundRangeComponent extends React.Component {
       "-" +
       ("0" + today.getDate()).slice(-2);
 
+      // configure current time
     let todayTime =
       ("0" + today.getHours()).slice(-2) +
       ":" +
@@ -40,42 +42,57 @@ export default class PredictedRoundRangeComponent extends React.Component {
       console.log(this.state.time);
     });
   }
+
+  // start predicting round range 
   getRoundRange = () => {
     this.setState({ predLoadStart: true }, () => {
       this.calculateAverageRoundPerSec();
     });
   };
 
+  // load date
   loadDate = e => {
     this.setState({ date: e.target.value }, () => {
       console.log(this.state.date);
     });
   };
 
+  // load time
   loadTime = e => {
     this.setState({ time: e.target.value }, () => {
       console.log(this.state.time);
     });
   };
 
+  // calculate round range based on datetime entered
   calculateAverageRoundPerSec = async () => {
-    console.log("Started");
+ 
     let params = await AlgorandClient.getTransactionParams();
+    // start time and get the start round
     let startTime = Date.now();
     let round1 = params.lastRound;
-    console.log(round1);
+
+    // wait for 6 sec
     setTimeout(async () => {
       let params = await AlgorandClient.getTransactionParams();
+      // end time and get the end round
       let endTime = Date.now();
       let round2 = params.lastRound;
-      console.log(round2);
+
+      // find round diff and time diff and calculate round per sec
       let diffRound = round2 - round1;
       let timeTaken = endTime - startTime;
       const roundTimeRatio = diffRound / timeTaken;
+
+      // get the entered date timestamp and find diff between current datetime and entered datetime
       const dateGiven = new Date(this.state.date + " " + this.state.time);
       const dateDiff = Math.abs(dateGiven.getTime() - new Date().getTime());
+
+      // predict the round range on endered datetime
       const predictedRound = Math.ceil(dateDiff * roundTimeRatio) + round2;
+
       console.log(roundTimeRatio, dateDiff, predictedRound);
+      
       this.setState({
         predictedRound,
         predLoadStart: false,
@@ -83,6 +100,7 @@ export default class PredictedRoundRangeComponent extends React.Component {
       });
     }, 6000);
   };
+  
   render() {
     return (
       <div
