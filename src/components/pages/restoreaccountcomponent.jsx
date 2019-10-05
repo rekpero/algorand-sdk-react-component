@@ -76,6 +76,9 @@ class RestoreAccountPage extends React.Component {
               </span>
             </div>
           </div>
+          <div className="text-center text-secondary mt-4">
+            Powered by Algorand
+          </div>
         </div>
       </div>
     );
