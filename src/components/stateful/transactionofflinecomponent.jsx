@@ -90,10 +90,7 @@ export default class TransactionOfflineComponent extends React.Component {
   render() {
     return (
       <div>
-        <div
-          style={{ padding: "4em" }}
-          className="rounded-lg shadow border bg-light p-4"
-        >
+        <div className="rounded-lg shadow border bg-light p-4">
           <div className="form-group text-center">
             <h3>Send Offline Transaction</h3>
           </div>

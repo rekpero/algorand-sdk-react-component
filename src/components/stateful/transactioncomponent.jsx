@@ -64,7 +64,6 @@ export default class TransactionComponent extends React.Component {
 
   componentDidMount() {
     $('[data-toggle="tooltip"]').tooltip();
-    this.calculateAverageRoundPerSec();
   }
 
   componentDidUpdate() {
@@ -201,21 +200,6 @@ export default class TransactionComponent extends React.Component {
     element.click();
   };
 
-  calculateAverageRoundPerSec = async () => {
-    let params = await AlgorandClient.getTransactionParams();
-    let startTime = Date.now();
-    let round1 = params.lastRound;
-    console.log(round1);
-    setTimeout(async () => {
-      let params = await AlgorandClient.getTransactionParams();
-      let endTime = Date.now();
-      let round2 = params.lastRound;
-      console.log(round2);
-      let diffRound = round2 - round1;
-      let timeTaken = endTime - startTime;
-      console.log(diffRound, timeTaken);
-    }, 60000);
-  };
 
   render() {
     return (

@@ -2,7 +2,7 @@ import * as React from "react";
 import MultisigTransactionComponent from "../stateful/multisigtransactioncomponent";
 
 /**
- * This component contain transaction components.
+ * This component contain multi signature transaction components.
  *
  * @author [Mitrasish Mukherjee](https://github.com/mmitrasish)
  */

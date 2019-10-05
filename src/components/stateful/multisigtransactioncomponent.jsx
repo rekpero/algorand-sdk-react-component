@@ -4,7 +4,6 @@ import $ from "jquery";
 import AlgorandClient from "../../services/algorandsdk";
 import copy from "clipboard-copy";
 import SuggestedFeeComponent from "./suggestedfeecomponent";
-import { async } from "q";
 
 /**
  * This component is used to send online multisig transaction.
@@ -197,6 +196,7 @@ export default class MultisigTransactionComponent extends React.Component {
           mparams,
           accountList[i].sk
         ).blob;
+        console.log(accountList[i].addr);
       }
       //submit the transaction
       AlgorandClient.sendRawTransaction(rawSignedTxn[rawSignedTxn.length - 1])
