@@ -14,6 +14,8 @@
 * Send Transaction Online
 * Sending Transaction Signed Offline
 * Getting suggested fees
+* Predicting round range based on datetime entered
+* Multi Signature Transaction
 
 ## Usage Overview
 
