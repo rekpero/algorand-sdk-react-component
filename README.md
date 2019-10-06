@@ -6,7 +6,7 @@
 
 ## Demo Link
 
-https://algorand-react-app.herokuapp.com/
+http://algorand-react-app.herokuapp.com/
 
 ## Features
 
