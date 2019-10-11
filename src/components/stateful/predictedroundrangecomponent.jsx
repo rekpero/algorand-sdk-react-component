@@ -1,5 +1,6 @@
 import * as React from "react";
 import AlgorandClient from "../../services/algorandsdk";
+import caution from "../../assets/images/caution.svg";
 
 /**
  * This component will show you predicted round range based on datetime entered in the input.
@@ -17,6 +18,7 @@ export default class PredictedRoundRangeComponent extends React.Component {
     this.state = {
       date: "",
       time: "",
+      secPerBlock: 4.5,
       predictedRound: 0,
       predLoadStart: false,
       predLoadEnd: false
@@ -32,7 +34,7 @@ export default class PredictedRoundRangeComponent extends React.Component {
       "-" +
       ("0" + today.getDate()).slice(-2);
 
-      // configure current time
+    // configure current time
     let todayTime =
       ("0" + today.getHours()).slice(-2) +
       ":" +
@@ -43,10 +45,10 @@ export default class PredictedRoundRangeComponent extends React.Component {
     });
   }
 
-  // start predicting round range 
+  // start predicting round range
   getRoundRange = () => {
     this.setState({ predLoadStart: true }, () => {
-      this.calculateAverageRoundPerSec();
+      this.calculateBlock();
     });
   };
 
@@ -64,43 +66,38 @@ export default class PredictedRoundRangeComponent extends React.Component {
     });
   };
 
-  // calculate round range based on datetime entered
-  calculateAverageRoundPerSec = async () => {
- 
-    let params = await AlgorandClient.getTransactionParams();
-    // start time and get the start round
-    let startTime = Date.now();
-    let round1 = params.lastRound;
-
-    // wait for 6 sec
-    setTimeout(async () => {
-      let params = await AlgorandClient.getTransactionParams();
-      // end time and get the end round
-      let endTime = Date.now();
-      let round2 = params.lastRound;
-
-      // find round diff and time diff and calculate round per sec
-      let diffRound = round2 - round1;
-      let timeTaken = endTime - startTime;
-      const roundTimeRatio = diffRound / timeTaken;
-
-      // get the entered date timestamp and find diff between current datetime and entered datetime
-      const dateGiven = new Date(this.state.date + " " + this.state.time);
-      const dateDiff = Math.abs(dateGiven.getTime() - new Date().getTime());
-
-      // predict the round range on endered datetime
-      const predictedRound = Math.ceil(dateDiff * roundTimeRatio) + round2;
-
-      console.log(roundTimeRatio, dateDiff, predictedRound);
-      
-      this.setState({
-        predictedRound,
-        predLoadStart: false,
-        predLoadEnd: true
-      });
-    }, 6000);
+  // load period
+  loadSecPerBlock = e => {
+    this.setState({ secPerBlock: e.target.value }, () => {
+      console.log(this.state.secPerBlock);
+    });
   };
-  
+
+  // calculate round range based on datetime entered
+  calculateBlock = async () => {
+    // calculate block per sec from the input
+    const blockPerSec = 1 / (this.state.secPerBlock * 1000);
+
+    // get the end round
+    const params = await AlgorandClient.getTransactionParams();
+    const round = params.lastRound;
+
+    // get the entered date timestamp and find diff between current datetime and entered datetime
+    const dateGiven = new Date(this.state.date + " " + this.state.time);
+    const dateDiff = Math.abs(dateGiven.getTime() - new Date().getTime());
+
+    // predict the round range on endered datetime
+    const predictedRound = Math.ceil(dateDiff * blockPerSec) + round;
+
+    console.log(blockPerSec, round, predictedRound);
+
+    this.setState({
+      predictedRound,
+      predLoadStart: false,
+      predLoadEnd: true
+    });
+  };
+
   render() {
     return (
       <div
@@ -129,6 +126,27 @@ export default class PredictedRoundRangeComponent extends React.Component {
               />
             </div>
           </div>
+        </div>
+        <div className="form-group">
+          <label className="d-flex">
+            Sec per block
+            <img
+              className="ml-auto"
+              src={caution}
+              alt="caution"
+              style={{ height: 16, width: 16 }}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Please change this field after getting confirmation from the algorand team"
+            />
+          </label>
+
+          <input
+            type="number"
+            className="form-control"
+            value={this.state.secPerBlock}
+            onChange={this.loadSecPerBlock}
+          />
         </div>
         <div className="form-group text-center">
           <button

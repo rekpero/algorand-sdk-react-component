@@ -34,6 +34,8 @@ export default class MultisigTransactionComponent extends React.Component {
       note: "",
       numOfAddress: 1,
       accountList: [],
+      mparams: {},
+      multsigaddr: "",
       threshold: 1,
       txnId: "",
       errorMessage: "",
@@ -100,10 +102,28 @@ export default class MultisigTransactionComponent extends React.Component {
       addressList.push(algosdk.generateAccount());
     }
 
+    //Setup the parameters for the multisig account
+    const mparams = {
+      version: 1,
+      threshold: this.state.threshold,
+      addrs: addressList.map(account => account.addr)
+    };
+
+    let multsigaddr = algosdk.multisigAddress(mparams);
+    console.log("Multisig Address: " + multsigaddr);
+
     // console.log(addressList);
-    this.setState({ accountList: addressList, accountCreated: true }, () => {
-      alert("Make sure address above has tokens using the dispenser");
-    });
+    this.setState(
+      {
+        accountList: addressList,
+        mparams: mparams,
+        multsigaddr: multsigaddr,
+        accountCreated: true
+      },
+      () => {
+        alert("Make sure address above has tokens using the dispenser");
+      }
+    );
   };
 
   // validating the sender account and also sending the transaction
@@ -131,21 +151,13 @@ export default class MultisigTransactionComponent extends React.Component {
           "does not have sufficient balance..."
       );
     } else {
-      //Setup the parameters for the multisig account
-      const mparams = {
-        version: 1,
-        threshold: this.state.threshold,
-        addrs: this.state.accountList.map(account => account.addr)
-      };
-
-      var multsigaddr = algosdk.multisigAddress(mparams);
-      console.log("Multisig Address: " + multsigaddr);
-
-      this.startTransaction(this.state.accountList, multsigaddr, mparams).catch(
-        e => {
-          console.log(e);
-        }
-      );
+      this.startTransaction(
+        this.state.accountList,
+        this.state.multsigaddr,
+        this.state.mparams
+      ).catch(e => {
+        console.log(e);
+      });
     }
   };
 
@@ -214,7 +226,9 @@ export default class MultisigTransactionComponent extends React.Component {
             numOfAddress: 1,
             threshold: 1,
             accountCreated: false,
-            accountList: []
+            accountList: [],
+            multsigaddr: "",
+            mparams: {}
           });
         })
         .catch(err => {
@@ -314,6 +328,17 @@ export default class MultisigTransactionComponent extends React.Component {
                   {account.addr}
                 </div>
               ))}
+            </div>
+          ) : null}
+
+          {this.state.multsigaddr !== "" ? (
+            <div className="form-group">
+              <div>
+                <label>Created Multisig Address</label>
+              </div>
+              <div className="badge badge-secondary">
+                {this.state.multsigaddr}
+              </div>
             </div>
           ) : null}
 
