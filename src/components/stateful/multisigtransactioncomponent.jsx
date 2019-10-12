@@ -105,7 +105,7 @@ export default class MultisigTransactionComponent extends React.Component {
     //Setup the parameters for the multisig account
     const mparams = {
       version: 1,
-      threshold: this.state.threshold,
+      threshold: Number.parseInt(this.state.threshold),
       addrs: addressList.map(account => account.addr)
     };
 
@@ -128,7 +128,7 @@ export default class MultisigTransactionComponent extends React.Component {
 
   // validating the sender account and also sending the transaction
   sendTransaction = async () => {
-    let accounts = await this.checkBalance();
+    let hasBalance = await this.checkBalance(this.state.multsigaddr);
     if (this.state.addressTo.value === "") {
       this.setState({
         addressTo: {
@@ -145,11 +145,8 @@ export default class MultisigTransactionComponent extends React.Component {
           message: "Please choose a valid address."
         }
       });
-    } else if (accounts.length !== 0) {
-      alert(
-        accounts.map(acc => acc.addr).reduce((tot, curr) => tot + curr + " ") +
-          "does not have sufficient balance..."
-      );
+    } else if (hasBalance) {
+      alert(this.state.multsigaddr + " does not have sufficient balance...");
     } else {
       this.startTransaction(
         this.state.accountList,
@@ -161,17 +158,13 @@ export default class MultisigTransactionComponent extends React.Component {
     }
   };
 
-  // get a list of zero balanced account in the accountList
-  checkBalance = async () => {
-    let zeroBalancedAccount = [];
-    for (let account of this.state.accountList) {
-      let balance = (await AlgorandClient.accountInformation(account.addr))
-        .amount;
-      console.log(balance + " " + account.addr);
-      if (balance === 0) zeroBalancedAccount.push(account);
-    }
-
-    return zeroBalancedAccount;
+  // check balance in the account
+  checkBalance = async (account) => {
+    let balance = (await AlgorandClient.accountInformation(
+      account
+    )).amount;
+    console.log(balance + " " + account);
+    return balance === 0;
   };
 
   // starting transaction here with the account from
@@ -202,6 +195,7 @@ export default class MultisigTransactionComponent extends React.Component {
         accountList[0].sk
       ).blob;
       for (let i = 1; i < this.state.threshold; i++) {
+        console.log(rawSignedTxn[i-1], mparams, accountList[i])
         //sign with second account
         rawSignedTxn[i] = algosdk.appendSignMultisigTransaction(
           rawSignedTxn[i - 1],

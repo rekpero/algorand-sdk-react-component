@@ -70,8 +70,19 @@ export default class TransactionComponent extends React.Component {
     $('[data-toggle="tooltip"]').tooltip();
   }
 
+  // check balance in the account
+  checkBalance = async account => {
+    let balance = (await AlgorandClient.accountInformation(account)).amount;
+    console.log(balance + " " + account);
+    return balance === 0;
+  };
+
   // validating the sender account and also sending the transaction
-  sendTransaction = () => {
+  sendTransaction = async () => {
+    let mnemonic = this.props.mnemonic;
+    let recoveredAccount = algosdk.mnemonicToSecretKey(mnemonic);
+    let hasBalance = await this.checkBalance(recoveredAccount.addr);
+
     if (this.state.addressTo.value === "") {
       this.setState({
         addressTo: {
@@ -88,10 +99,9 @@ export default class TransactionComponent extends React.Component {
           message: "Please choose a valid address."
         }
       });
+    } else if (hasBalance) {
+      alert(recoveredAccount + " does not have sufficient balance...");
     } else {
-      let mnemonic = this.props.mnemonic;
-      let recoveredAccount = algosdk.mnemonicToSecretKey(mnemonic);
-
       this.startTransaction(recoveredAccount).catch(e => {
         console.log(e);
       });
@@ -199,7 +209,6 @@ export default class TransactionComponent extends React.Component {
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
   };
-
 
   render() {
     return (
