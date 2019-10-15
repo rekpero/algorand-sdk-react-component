@@ -147,6 +147,11 @@ The multisig transaction component will give a UI like this:
 1. Popper.js v1.15.0
 1. clipboard-copy v3.1.0
 
+## Reference
+
+* github repo: https://github.com/algorand/js-algorand-sdk
+* official docs: https://developer.algorand.org/docs/javascript-sdk
+
 ## Licence
 
 [LICENSE](https://github.com/mmitrasish/algorand-sdk-react-component/blob/master/LICENSE)
