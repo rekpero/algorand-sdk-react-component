@@ -98,6 +98,7 @@ class AccountComponent extends React.Component {
       transactionLoaded: true
     });
   };
+
   render() {
     return (
       <div className="container-fluid">
