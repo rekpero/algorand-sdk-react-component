@@ -32,28 +32,9 @@ class AccountComponent extends React.Component {
     // get address from state
     let addr = this.props.address;
 
-    // get account information
-    let accountDet = await AlgorandClient.accountInformation(addr);
-    // setting balance to state
-    this.setState({
-      balance: accountDet.amount / 1000000
-    });
+    this.getAccountBalance(addr);
 
-    // get transaction params
-    let params = await AlgorandClient.getTransactionParams();
-
-    //get all transactions for an address for the last 1000 rounds
-    let txts = await AlgorandClient.transactionByAddress(
-      addr,
-      params.lastRound - 1000,
-      params.lastRound
-    );
-
-    // setting transaction list and transactionLoaded to true
-    this.setState({
-      transactions: txts.transactions === undefined ? [] : txts.transactions,
-      transactionLoaded: true
-    });
+    this.getAccountTransaction(addr);
 
     // for tooltip
     $('[data-toggle="tooltip"]').tooltip();
@@ -70,12 +51,52 @@ class AccountComponent extends React.Component {
    */
   changeAccount = account => {
     this.props.changeAccount(account);
+    console.log(account);
     this.setState({
       balance: 0,
       transactions: [],
       transactionLoaded: false
     });
-    this.componentDidMount();
+    this.getAccountBalance(account.address);
+    this.getAccountTransaction(account.address);
+  };
+
+  /**
+   * Get account balance
+   *
+   * @param {{address: string}} addr
+   */
+  getAccountBalance = async addr => {
+    // get account information
+    let accountDet = await AlgorandClient.accountInformation(addr);
+    // setting balance to state
+    console.log(accountDet);
+    this.setState({
+      balance: accountDet.amount / 1000000
+    });
+  };
+
+  /**
+   * Get account transactions
+   *
+   * @param {{address: string}} addr
+   */
+  getAccountTransaction = async addr => {
+    // get transaction params
+    let params = await AlgorandClient.getTransactionParams();
+
+    //get all transactions for an address for the last 1000 rounds
+    let txts = await AlgorandClient.transactionByAddress(
+      addr,
+      params.lastRound - 1000,
+      params.lastRound
+    );
+
+    // setting transaction list and transactionLoaded to true
+    this.setState({
+      transactions: txts.transactions === undefined ? [] : txts.transactions,
+      transactionLoaded: true
+    });
   };
   render() {
     return (

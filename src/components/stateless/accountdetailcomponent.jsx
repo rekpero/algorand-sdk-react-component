@@ -47,7 +47,7 @@ const AccountDetailComponent = props => {
             }
             onClick={copyToClipboard}
           >
-            {props.address.substr(0, 10)}...
+            {props.address.substr(0, 4)}...
             {props.address.substr(-4, 4)}
           </span>
         </div>
@@ -77,7 +77,7 @@ const AccountDetailComponent = props => {
               >
                 <div className="font-weight-bold">Account {index + 1}</div>
                 <span className="badge badge-secondary">
-                  {account.address.substr(0, 5)}...
+                  {account.address.substr(0, 4)}...
                   {account.address.substr(-4, 4)}
                 </span>
               </button>
