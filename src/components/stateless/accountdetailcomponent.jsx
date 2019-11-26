@@ -127,13 +127,13 @@ const AccountDetailComponent = props => {
         <div className="d-flex justify-content-between">
           <h4>Mnemonic</h4>
           <div>
-            <a
+            <span
               className="badge badge-primary text-white p-2"
               style={{ fontSize: 16 }}
               onClick={downloadMnemonicFile}
             >
               save
-            </a>
+            </span>
           </div>
         </div>
         <div className="mt-2">
