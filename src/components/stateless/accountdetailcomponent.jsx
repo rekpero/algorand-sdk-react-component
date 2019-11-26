@@ -137,8 +137,8 @@ const AccountDetailComponent = props => {
           </div>
         </div>
         <div className="mt-2">
-          {props.mnemonic.split(" ").map(term => (
-            <span className="badge badge-info m-1" key={term}>
+          {props.mnemonic.split(" ").map((term, index) => (
+            <span className="badge badge-info m-1" key={index}>
               {term.trim()}
             </span>
           ))}
